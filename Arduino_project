@@ -1,0 +1,73 @@
+//Task-1
+
+//Written by:- Srijoy Chaki 
+
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 10, 9, 8, 7, 6);
+
+int i = 0;
+const unsigned long eventInterval = 1;
+unsigned long previousTime = 0;
+
+void setup()
+{
+  lcd.begin(16, 1);
+  pinMode(3, INPUT);
+  pinMode(4, INPUT);
+  pinMode(5, INPUT);
+  lcd.setCursor(0, 0);
+  lcd.print("COUNTDOWN STARTS..!");
+}
+
+void loop()
+{
+  unsigned long currentTime = millis();
+  lcd.setCursor(5, 1);
+  lcd.print(i);
+
+  if (currentTime - previousTime >= eventInterval)             //For time interval
+  {
+    previousTime = currentTime;
+
+    if (digitalRead(5) == HIGH)                                            //Decrement button
+    {
+      lcd.clear();
+      i = i - 1;
+      lcd.setCursor(5, 1);
+      lcd.print(i);
+      while (1)
+      {
+        if (digitalRead(5) == LOW)
+        {
+          goto a;
+        }
+      }
+    }
+
+a:
+    if (digitalRead(3) == HIGH)                                               //Increment button
+    {
+      lcd.clear();
+      i = i + 1;
+      lcd.setCursor(5, 1);
+      lcd.print(i);
+      while (1)
+      {
+        if (digitalRead(3) == LOW)
+        {
+          goto b;
+        }
+      }
+    }
+
+b:
+    if (digitalRead(4) == HIGH)                                                //Restart button
+    {
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("COUNTDOWN STARTS..!");
+      i = 0;
+    }
+  }
+}
